@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ ! -f $SNAP_USER_DATA/project.json ]; then
+    wget -O $SNAP_USER_DATA/project.json https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/project.json
+fi
+
+if [ ! -f $SNAP_USER_DATA/Program.cs ]; then
+    wget -O $SNAP_USER_DATA/Program.cs https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/Program.cs
+fi
+
+if [ ! -f $SNAP_USER_DATA/data/config.json ]; then
+    mkdir -p $SNAP_USER_DATA/data
+    wget -O $SNAP_USER_DATA/data/config.json https://raw.githubusercontent.com/openchain/openchain/v0.6.2/src/Openchain/data/config.json
+fi
+
+if [ ! -f $SNAP_USER_DATA/project.lock.json ]; then
+    cd $SNAP_USER_DATA && dotnet restore
+fi
+
+cd $SNAP_USER_DATA && dotnet run "$@"
